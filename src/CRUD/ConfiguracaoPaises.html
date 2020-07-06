@@ -1,0 +1,482 @@
+﻿<!DOCTYPE html>
+
+<head>
+	
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<title>CRUD - Trabalho 3</title>
+
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../css/styleCRUD.css">
+    
+	<script src="https://kit.fontawesome.com/b99e675b6e.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src='../../js/Crud/scriptpaises.js'></script>
+
+</head>
+
+<body>
+
+	<!-- Container Tabela -->
+	<div class="container">
+
+		<div class="table-wrapper">
+
+			<div class="table-title">
+
+				<div class="row">
+					
+					<div class="col-sm-6">
+
+						<h2></h2>
+
+					</div>
+
+					<div class="col-sm-6">
+
+						<a href="#addCardsModal" class="btn btn-outline-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Adicionar Novo Card</span></a>
+
+						<!-- <a href="#deleteSeveralCardsModal" class="btn btn-outline-danger" data-toggle="modal"><i class="material-icons">&#xE15C;</i> <span id="deleteSeveralCards">Excluir Selecionados&nbsp;</span><span id="countChecked">(0)</span></a>						 -->
+
+					</div>
+
+				</div>
+
+			</div>
+
+			<table class="table table-striped table-hover">
+
+				<thead>
+
+					<tr>
+
+						<th>
+
+							<span class="custom-checkbox">
+
+								<input type="checkbox" id="selectAll">
+
+								<label for="selectAll"></label>
+
+							</span>
+
+						</th>
+
+                        <th>País</th>
+                        
+                        <th>Mortes</th>
+                        
+                        <th>Confirmados</th>
+
+                        <th>Recuperados</th>
+
+						<th></th>
+
+					</tr>
+
+				</thead>
+
+				<tbody id="dataTable" >
+                    
+
+				</tbody>
+
+			</table>
+
+
+
+		</div>
+
+	</div>
+
+    <!-- FIM - Container Tabela -->
+	<!-- Add Modal HTML -->
+
+	<div id="addCardsModal" class="modal fade">
+
+		<div class="modal-dialog">
+
+			<div class="modal-content">
+
+					<div class="modal-header">						
+
+						<h4 class="modal-title">Adicionar Pais</h4>
+
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+
+                    </div>
+                    
+                
+
+
+					<div class="modal-body">	
+                        <div class="form-group">
+
+                            <label>País</label>
+    
+                            <input type="text" id="addPaises" class="form-control" required>
+    
+                        </div>				
+
+						<div class="form-group">
+
+							<label>Mortes</label>
+
+							<input type="number" id="addMortes" class="form-control" required>
+
+                        </div>
+                        
+                        
+						<div class="form-group">
+
+							<label>Confirmados</label>
+
+							<input type="number" id="addConfirmados" class="form-control" required>
+
+						</div>
+
+
+						<div class="form-group">
+
+							<label>Recuperados</label>
+
+							<input type="number" id="addRecuperados" class="form-control" required>
+
+						</div>		
+						
+					</div>
+
+					<div class="modal-footer">
+
+                        <input type="button"  class="btn btn-default" data-dismiss="modal" value="Cancelar">
+                        
+						<button type="submit" value="submit" class="btn btn-success" id="addCards" >Adicionar</button>
+
+					</div>
+
+			</div>
+
+		</div>
+
+	</div>
+
+	<!-- FIM - Add Modal HTML -->
+	<!-- Confirmação Add Modal HTML -->
+
+	<div id="alreadyAddedCardsModal" class="modal fade">
+
+		<div class="modal-dialog">
+
+			<div class="modal-content">
+
+
+					<div class="modal-header">						
+
+						
+						<h4 class="modal-title">Card Adicionado</h4>
+
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+
+					</div>
+
+					<div class="modal-body">					
+           
+						<p>Os registros de '+ selectedCards.name + ' foram salvos com sucesso!</p>
+
+					</div>
+
+					<div class="modal-footer">
+
+						<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancelar">
+
+						<button type="submit" class="btn btn-success" data-dismiss="modal">Ok</button>
+
+					</div>
+					
+			</div>
+
+		</div>
+
+	</div>
+
+	<!-- FIM - Confirmação Add Modal HTML -->
+	<!-- Edição Modal HTML -->
+
+	<div id="editCardsModal" class="modal fade">
+
+
+		<div class="modal-dialog">
+
+			<div class="modal-content">
+
+
+					<div class="modal-header">						
+
+						<h4 class="modal-title">Editar Pais</h4>
+
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+
+					</div>
+
+					<div class="modal-body">					
+
+                        <div class="form-group">
+
+                            <label>País</label>
+    
+                            <input type="text" id="editPaises" class="form-control" required>
+    
+                        </div>				
+
+						<div class="form-group">
+
+							<label>Mortes</label>
+
+							<input type="text" id="editMortes" class="form-control" required>
+
+                        </div>
+                        
+                        
+						<div class="form-group">
+
+							<label>Confirmados</label>
+
+							<input type="text" id="editConfirmados" class="form-control" required>
+
+						</div>
+
+
+						<div class="form-group">
+
+							<label>Recuperados</label>
+
+							<input type="text" id="editRecuperados" class="form-control" required>
+
+						</div>			
+
+					</div>
+
+					<div class="modal-footer">
+
+						<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancelar">
+
+						<input type="submit" class="btn btn-success" id="editCards" value="Salvar">
+
+					</div>
+
+			</div>
+
+		</div>
+
+	</div>
+
+	<!-- FIM - Edição Modal HTML -->
+	<!-- Confirmação Edição Modal HTML -->
+
+	<div id="alreadyEditedCardsModal" class="modal fade">
+
+		<div class="modal-dialog">
+
+			<div class="modal-content">
+
+
+					<div class="modal-header">						
+
+						
+						<h4 class="modal-title">Card Atualizado</h4>
+
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+
+					</div>
+
+					<div class="modal-body">					
+           
+						<p>Os registros de '+ selectedCards.name + ' foram atualizados com sucesso!</p>
+
+					</div>
+
+					<div class="modal-footer">
+
+						<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancelar">
+
+						<button type="submit" class="btn btn-success" data-dismiss="modal">Ok</button>
+
+					</div>
+					
+			</div>
+
+		</div>
+
+	</div>
+
+	<!-- FIM - Confirmação Edição Modal HTML -->
+	<!-- Excluir Modal HTML -->
+
+	<div id="deleteCardsModal" class="modal fade">
+
+		<div class="modal-dialog">
+
+			<div class="modal-content">
+
+
+					<div class="modal-header">						
+
+						
+						<h4 class="modal-title">Excluir Cards</h4>
+
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+
+					</div>
+
+					<div class="modal-body">					
+           
+                            <!-- mensagem -->
+
+					</div>
+
+					<div class="modal-footer">
+
+						<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancelar">
+
+						<button type="submit" class="btn btn-danger" id="deleteCards" value="Excluir">Excluir</button>
+
+					</div>
+					
+			</div>
+
+		</div>
+
+	</div>
+
+	<!-- FIM - Excluir Modal HTML -->
+	<!-- Confirmação Excluir Modal HTML -->
+
+	<div id="alreadyDeletedCardsModal" class="modal fade">
+
+		<div class="modal-dialog">
+
+			<div class="modal-content">
+
+
+					<div class="modal-header">						
+
+						
+						<h4 class="modal-title">Card Excluído</h4>
+
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+
+					</div>
+
+					<div class="modal-body">					
+           
+						<p>Os registros de '+ selectedCards.name + ' foram excluídos com sucesso!</p>
+
+					</div>
+
+					<div class="modal-footer">
+
+						<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancelar">
+
+						<button type="submit" class="btn btn-success" data-dismiss="modal">Ok</button>
+
+					</div>
+					
+			</div>
+
+		</div>
+
+	</div>
+
+	<!-- FIM - Confirmação Excluir Modal HTML -->
+	<!-- Excluir Múltiplos Modal HTML -->
+
+	<div id="deleteSeveralCardsModal" class="modal fade">
+
+		<div class="modal-dialog">
+
+			<div class="modal-content">
+
+					<div class="modal-header">						
+
+						
+						<h4 class="modal-title">Excluir Cards</h4>
+
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+
+					</div>
+
+					<div class="modal-body">					
+
+						<p>Você tem certeza que deseja excluir estes 0 registro(s) selecionado(s)?</p>
+
+						<p class="text-warning"><small>Essa ação não pode ser desfeita.</small></p>
+
+					</div>
+
+					<div class="modal-footer">
+
+						<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancelar">
+
+						<input type="submit" class="btn btn-danger" id="deleteSeveralCardsConfirm" value="Excluir">
+
+					</div>
+					
+			</div>
+
+		</div>
+
+	</div>
+
+	<!-- FIM - Excluir Múltiplos Modal HTML -->
+	<!-- Confirmação Excluir Múltiplos Modal HTML -->
+
+	<div id="alreadyDeletedSeveralCardsModal" class="modal fade">
+
+		<div class="modal-dialog">
+
+			<div class="modal-content">
+
+
+					<div class="modal-header">						
+
+						
+						<h4 class="modal-title">Cards Excluídos</h4>
+
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+
+					</div>
+
+					<div class="modal-body">					
+           
+						<p>Os x registros selecionados foram excluídos com sucesso!</p>
+
+					</div>
+
+					<div class="modal-footer">
+
+						<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancelar">
+
+						<button type="submit" class="btn btn-success" data-dismiss="modal">Ok</button>
+
+					</div>
+					
+			</div>
+
+		</div>
+
+	</div>
+
+	<!-- FIM - Confirmação Excluir Múltiplos Modal HTML -->
+
+</body>
+
+
+
+</html>                
